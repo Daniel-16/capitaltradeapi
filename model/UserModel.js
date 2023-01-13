@@ -28,6 +28,10 @@ const UserSchema = new mongoose.Schema({
       "Please provide a valid email",
     ],
   },
+  referrerId: {
+    type: String,
+    required: false,
+  },
 });
 
 UserSchema.pre("save", async function (next) {
@@ -44,7 +48,8 @@ UserSchema.statics.signup = async function (
   phoneNumber,
   country,
   password,
-  email
+  email,
+  referrerId
 ) {
   if (!email || !password) {
     throw Error("Invalid email or password. All fields must be filled");
@@ -68,6 +73,7 @@ UserSchema.statics.signup = async function (
     country,
     password,
     email,
+    referrerId,
   });
   return user;
 };

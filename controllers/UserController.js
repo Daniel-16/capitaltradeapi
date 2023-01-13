@@ -1,14 +1,16 @@
 const UserModel = require("../model/UserModel");
 
 exports.signup = async (req, res) => {
-  const { fullname, phoneNumber, country, password, email } = req.body;
+  const { fullname, phoneNumber, country, password, email, referrerId } =
+    req.body;
   try {
     const user = await UserModel.signup(
       fullname,
       phoneNumber,
       country,
       password,
-      email
+      email,
+      referrerId
     );
     res.status(201).json({
       success: true,
@@ -36,3 +38,4 @@ exports.login = async (req, res) => {
     });
   }
 };
+//Forgotten password controller

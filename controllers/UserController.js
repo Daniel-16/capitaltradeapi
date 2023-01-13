@@ -1,14 +1,14 @@
 const UserModel = require("../model/UserModel");
 
 exports.signup = async (req, res) => {
-  const { fullname, email, password, phoneNumber, country } = req.body;
+  const { fullname, phoneNumber, country, password, email } = req.body;
   try {
     const user = await UserModel.signup(
       fullname,
-      email,
-      password,
       phoneNumber,
-      country
+      country,
+      password,
+      email
     );
     res.status(201).json({
       success: true,

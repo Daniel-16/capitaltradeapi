@@ -32,13 +32,19 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  resetPasswordExpire: {
+    type: Date,
+  },
+  resetPasswordToken: {
+    type: String,
+  },
 });
 
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt();
   this.password = bcrypt.hash(this.password, salt);
   next();
 });
@@ -94,6 +100,19 @@ UserSchema.statics.login = async function (email, password) {
     throw Error("Password is incorrect");
   }
   return user;
+};
+
+//Forgotten password
+UserSchema.methods.getResetPassToken = function () {
+  const resetToken = crypto.randomBytes(20).toString("hex");
+  this.resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  //Reset Password Token Expiry
+  this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);
+  return resetToken;
 };
 
 const UserModel = mongoose.model("Users", UserSchema);

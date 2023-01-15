@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt"); 
 const validator = require("validator");
 const crypto = require("crypto");
 const UserSchema = new mongoose.Schema({
@@ -17,6 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
+    required:true,
     minlength: 6,
   },
   email: {
@@ -45,8 +46,7 @@ UserSchema.pre("save", async function (next) {
     next();
   }
   const salt = await bcrypt.genSalt(10);
-  this.password = bcrypt.hash(this.password, salt);
-  console.log("password not modified");
+  this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
@@ -74,6 +74,9 @@ UserSchema.statics.signup = async function (
   if (exists) {
     throw Error("User email already exists");
   }
+
+
+
   const user = await this.create({
     fullname,
     phoneNumber,
@@ -103,7 +106,7 @@ UserSchema.statics.login = async function (email, password) {
   return user;
 };
 
-//Forgotten password
+//Forgotte n password
 UserSchema.methods.getResetPassToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
   this.resetPasswordToken = crypto

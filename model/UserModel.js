@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt"); 
+const bcrypt = require("bcrypt");
 const validator = require("validator");
 const crypto = require("crypto");
 const UserSchema = new mongoose.Schema({
@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required:true,
+    required: true,
     minlength: 6,
   },
   email: {
@@ -75,8 +75,6 @@ UserSchema.statics.signup = async function (
     throw Error("User email already exists");
   }
 
-
-
   const user = await this.create({
     fullname,
     phoneNumber,
@@ -106,7 +104,7 @@ UserSchema.statics.login = async function (email, password) {
   return user;
 };
 
-//Forgotte n password
+//Forgotten password
 UserSchema.methods.getResetPassToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
   this.resetPasswordToken = crypto

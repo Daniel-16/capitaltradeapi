@@ -1,5 +1,6 @@
 const UserModel = require("../model/UserModel");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.JWT_SIGNING, { expiresIn: "7d" });
@@ -47,3 +48,6 @@ exports.login = async (req, res) => {
   }
 };
 //Forgotten password controller
+exports.resetPassword = async (req, res, next) => {
+  const resetPassword = crypto
+}

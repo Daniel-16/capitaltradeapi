@@ -50,4 +50,31 @@ exports.login = async (req, res) => {
 //Forgotten password controller
 exports.resetPassword = async (req, res, next) => {
   const resetPassword = crypto
-}
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+  try {
+    const user = await UserModel.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+    if (!user) {
+      throw Error(
+        "Invalid reset token",
+        res.status(400).json({
+          error: "Invalid reset token",
+        })
+      );
+    }
+    user.password = req.body.password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordToken = undefined;
+    await user.save();
+    res.status(201).json({
+      success: true,
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};

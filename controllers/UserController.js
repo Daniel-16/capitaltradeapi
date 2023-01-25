@@ -49,7 +49,7 @@ exports.login = async (req, res) => {
 };
 //Forgotten password controller
 exports.resetPassword = async (req, res, next) => {
-  const resetPassword = crypto
+  const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.resetToken)
     .digest("hex");

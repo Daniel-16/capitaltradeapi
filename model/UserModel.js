@@ -89,7 +89,7 @@ UserSchema.statics.signup = async function (
 UserSchema.statics.login = async function (email, password) {
   if (!email || !password) {
     throw Error(
-      "Invalid email or password. All fields must be filled in order to login"
+      "Invalid email or password. All fields must be filled in order to login."
     );
   }
   const user = await this.findOne({ email });

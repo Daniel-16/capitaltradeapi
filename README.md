@@ -1,6 +1,6 @@
 # Capital Trade API
 
-In the project directory, you can run;
+In the project directory, you can run.
 ### `npm start`
 This line of code runs the app in development mode using node js.
 
